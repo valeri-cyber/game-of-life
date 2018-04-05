@@ -7,17 +7,18 @@ public class GameOfLifeService {
 	
 	public int[][] getLife(int[][] arr, int gen){
 		for (int g=1; g<=gen; g++) {
-			int[][] tempArr = new int[arr.length][arr[arr.length-1].length];
-			for (int i=0; i<arr.length; i++) {
-				for (int j=0; j<arr[i].length; j++) {
-					if (arr[i][j] == 0 && countLife(arr, i, j) == 3) {
+			int[][] tempArr = new int[arr.length][arr[0].length];
+			for (int i=0; i<tempArr.length; i++) {
+				for (int j=0; j<tempArr[i].length; j++) {
+					int countLife = countLife(arr, i, j);
+					if (arr[i][j] == 0 && countLife == 3) {
 						tempArr[i][j] = 1; continue;
-					} else if (arr[i][j] == 0 && countLife(arr, i, j) != 3){
+					} else if (arr[i][j] == 0 && countLife != 3){
 						tempArr[i][j] = 0; continue;
 					}
 					
 					if (arr[i][j] == 1) {
-						switch (countLife(arr, i, j)) {
+						switch (countLife) {
 						case 1: tempArr[i][j] = 0; break;
 						case 2:
 						case 3: tempArr[i][j] = 1; break;
@@ -40,6 +41,7 @@ public class GameOfLifeService {
 	
 	private int countLife(int[][] arr, int row, int col) {
 		int count = 0;
+		System.out.println(row + ", " + col);
 		
 		if (row == 0 && col == 0) {
 			if (arr[0][1] == 1) count++;
@@ -52,7 +54,6 @@ public class GameOfLifeService {
 			if (arr[row-1][col-1] == 1) count++;
 			if (arr[row-1][col] == 1) count++;
 			if (arr[row][col-1] == 1) count++;
-			if (arr[row-1].length > arr[row].length && arr[row-1][col+1] == 1) count++;
 			return count;
 		}
 		
@@ -67,7 +68,6 @@ public class GameOfLifeService {
 			if (arr[row][col-1] == 1) count++;
 			if (arr[row+1][col-1] == 1) count++;
 			if (arr[row+1][col] == 1) count++;
-			if (arr[row+1].length > arr[row].length && arr[row+1][col+1] == 1) count++;
 			return count;
 		}
 		
@@ -89,23 +89,21 @@ public class GameOfLifeService {
 			return count;
 		}
 		
-		if (col == arr[row].length-1) {
-			if (arr[row-1].length >= arr[row].length-1 && arr[row-1][col-1] == 1) count++;
-			if (arr[row-1].length == arr[row].length && arr[row-1][col] == 1) count++;
-			if (arr[row][col-1] == 1) count++;
-			if (arr[row+1].length >= arr[row].length-1 && arr[row+1][col-1] == 1) count++;
-			if (arr[row+1].length == arr[row].length && arr[row+1][col] == 1) count++;
-			if (arr[row-1].length > arr[row].length && arr[row-1][col+1] == 1) count++;
-			if (arr[row+1].length > arr[row].length && arr[row+1][col+1] == 1) count++;
-			return count;
-		}
-		
 		if (col == 0) {
 			if (arr[row-1][0] == 1) count++;
 			if (arr[row-1][1] == 1) count++;
 			if (arr[row][1] == 1) count++;
 			if (arr[row+1][1] == 1) count++;
 			if (arr[row+1][0] == 1) count++;
+			return count;
+		}
+		
+		if (col == arr[row].length-1) {
+			if (arr[row-1][col-1] == 1) count++;
+			if (arr[row-1][col] == 1) count++;
+			if (arr[row][col-1] == 1) count++;
+			if (arr[row+1][col-1] == 1) count++;
+			if (arr[row+1][col] == 1) count++;
 			return count;
 		}
 		
