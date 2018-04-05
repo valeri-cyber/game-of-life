@@ -10,6 +10,7 @@ public class GameOfLifeService {
 			int[][] tempArr = new int[arr.length][arr[0].length];
 			for (int i=0; i<tempArr.length; i++) {
 				for (int j=0; j<tempArr[i].length; j++) {
+					if (arr[i].length == j) break; //in case this row of arr[] is shorter than tempArr[]'s row
 					int countLife = countLife(arr, i, j);
 					if (arr[i][j] == 0 && countLife == 3) {
 						tempArr[i][j] = 1; continue;
@@ -41,7 +42,6 @@ public class GameOfLifeService {
 	
 	private int countLife(int[][] arr, int row, int col) {
 		int count = 0;
-		System.out.println(row + ", " + col);
 		
 		if (row == 0 && col == 0) {
 			if (arr[0][1] == 1) count++;
